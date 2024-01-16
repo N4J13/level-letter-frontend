@@ -7,7 +7,9 @@ import { useMutation } from "react-query";
 import { axiosInstance } from "@/lib/axios";
 import { Link } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { motion } from "framer-motion";
 import FormInput from "@/components/ui/FormInput";
+import { Loader2 } from "lucide-react";
 
 const loginFormSchema = z.object({
   email: z
@@ -34,14 +36,37 @@ const LoginForm = () => {
       return axiosInstance.post("/user/login", data);
     },
     onSuccess: (value) => {
+      if (value.data.message === "Password Doesnt match") {
+        toast({
+          title: value.data.message,
+          description: "Please try again with a different password.",
+        });
+      } else if (value.data.message === "User not found") {
+        toast({
+          title: value.data.message,
+          description: "Please try again with a different email.",
+        });
+      } else if (value.data.message === "Email not verified , Email Sent") {
+        toast({
+          title: value.data.message,
+          description: "Please check your email to verify your account.",
+        });
+      } else
+        toast({
+          title: value.data.message,
+          description: "You have successfully logged in.",
+        });
+    },
+    onError: () => {
       toast({
-        title: value.data.message,
-        description: "You have successfully logged in.",
+        title: "Something went wrong",
+        description: "Please try again later.",
       });
     },
   });
 
   const onSubmit = (value: z.infer<typeof loginFormSchema>) => {
+    form.reset();
     loginMutaion.mutate(value);
   };
 
@@ -79,7 +104,32 @@ const LoginForm = () => {
               </Link>
             </div>
             <Button className="w-full" type="submit">
-              {loginMutaion.isLoading ? "Loading.." : "Submit"}
+              {loginMutaion.isLoading ? (
+                <span className="flex items-center gap-2">
+                  Loading
+                  <motion.span
+                    initial="hidden"
+                    animate={loginMutaion.isLoading ? "animate" : "hidden"}
+                    variants={{
+                      hidden: {
+                        opacity: 0,
+                        x: -10,
+                      },
+                      animate: {
+                        opacity: 1,
+                        x: 0,
+                        transition: {
+                          bounce: 0.5,
+                        },
+                      },
+                    }}
+                  >
+                    <Loader2 size={18} className="animate-spin" />
+                  </motion.span>
+                </span>
+              ) : (
+                "Submit"
+              )}
             </Button>
           </form>
         </Form>

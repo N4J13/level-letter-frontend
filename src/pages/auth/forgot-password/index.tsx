@@ -14,9 +14,7 @@ const ForgotPassword = () => {
     const timeout =  setTimeout(() => {
       setActive(false);
     }, 5000);
-
     return {
-
         clearTimeout: () => clearTimeout(timeout)
     };
   };
