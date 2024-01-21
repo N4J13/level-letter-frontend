@@ -10,6 +10,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 import FormInput from "@/components/ui/FormInput";
 import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import useLocalStorage from "use-local-storage";
+import { useEffect } from "react";
 
 const loginFormSchema = z.object({
   email: z
@@ -21,7 +24,19 @@ const loginFormSchema = z.object({
 });
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
+
+  const [user, setUser] = useLocalStorage("user", null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [token, setToken] = useLocalStorage("token", null);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
+
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -51,11 +66,13 @@ const LoginForm = () => {
           title: value.data.message,
           description: "Please check your email to verify your account.",
         });
-      } else
-        toast({
-          title: value.data.message,
-          description: "You have successfully logged in.",
-        });
+      } else {
+        setToken(value.data.token);
+        setUser(value.data.userId);
+        setTimeout(() => {
+          navigate("/");
+        }, 100);
+      }
     },
     onError: () => {
       toast({
@@ -66,7 +83,6 @@ const LoginForm = () => {
   });
 
   const onSubmit = (value: z.infer<typeof loginFormSchema>) => {
-    form.reset();
     loginMutaion.mutate(value);
   };
 

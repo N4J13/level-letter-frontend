@@ -16,7 +16,9 @@ const VerifyEmail = () => {
         const { token: jwttoken, userId } = response.data;
         localStorage.setItem("token", jwttoken);
         localStorage.setItem("userId", userId);
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+        },1000)
       } catch (error) {
         console.error("Verification failed", error);
       }

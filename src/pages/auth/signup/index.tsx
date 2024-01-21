@@ -3,7 +3,7 @@ import SignUpForm from "./SignupForm";
 
 const Signup = () => {
   return (
-    <div className="h-svh w-full overflow-hidden flex p-6 max-w-[1920px] ">
+    <div className="h-svh w-full overflow-hidden flex p-6 max-w-[1920px] mx-auto">
       <SignUpForm />
       <AuthSidePanel />
     </div>
