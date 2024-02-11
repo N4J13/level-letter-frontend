@@ -26,13 +26,10 @@ const loginFormSchema = z.object({
 const LoginForm = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  const [user, setUser] = useLocalStorage("user", null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [token, setToken] = useLocalStorage("token", null);
+  const [token] = useLocalStorage("token", "");
 
   useEffect(() => {
-    if (user) {
+    if (token) {
       navigate("/");
     }
   }, []);
@@ -67,8 +64,8 @@ const LoginForm = () => {
           description: "Please check your email to verify your account.",
         });
       } else {
-        setToken(value.data.token);
-        setUser(value.data.userId);
+        localStorage.setItem("token", value.data.token);
+        localStorage.setItem("userId", value.data.userId);
         setTimeout(() => {
           navigate("/");
         }, 100);

@@ -20,7 +20,10 @@ module.exports = {
     },
     extend: {
       colors :{
-        "primary" : "#00C844"
+        "primary" : "#00C844",
+        "background-primary" : "#080808",
+        "background-secondary" : "#121418",
+        
       },
       fontFamily  : {
         "main" : ["Raleway" , "sans-serif"]

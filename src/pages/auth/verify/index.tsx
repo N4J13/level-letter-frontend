@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const VerifyEmail = () => {
   const navigate = useNavigate();
   const [search] = useSearchParams();
-  const token = search.get("token");
+  const token  = search.get("token");
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -16,16 +16,14 @@ const VerifyEmail = () => {
         const { token: jwttoken, userId } = response.data;
         localStorage.setItem("token", jwttoken);
         localStorage.setItem("userId", userId);
-        setTimeout(() => {
-          navigate("/");
-        },1000)
+        navigate("/");
       } catch (error) {
         console.error("Verification failed", error);
       }
     };
 
     verifyToken();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   return (
