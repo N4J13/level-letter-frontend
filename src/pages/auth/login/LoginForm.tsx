@@ -32,7 +32,7 @@ const LoginForm = () => {
     if (token) {
       navigate("/");
     }
-  }, []);
+  }, [navigate, token]);
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
