@@ -1,8 +1,8 @@
+import { useAuth } from "@/lib/hooks/useAuth";
 
 const Home = () => {
-  return (
-    <div className="">Home</div>
-  )
-}
+  const { user } = useAuth();
+  return <div className="">{user?.email as string}</div>;
+};
 
-export default Home
+export default Home;

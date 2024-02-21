@@ -7,6 +7,7 @@ import Home from "@/pages/home";
 import Category from "@/pages/categories/[category]";
 import UserLayout from "@/components/main/UserLayout";
 import AuthLayout from "@/components/main/AuthLayout";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const AppRoutes = () => {
   return (
@@ -19,12 +20,54 @@ export const AppRoutes = () => {
       <Route path="/verify" element={<VerifyEmail />} />
 
       <Route path="/" element={<UserLayout />}>
-        <Route index element={<Home />} />
-        <Route path="/categories/:category" element={<Category />} />
-        <Route path="/profile" element={<div>Profile</div>} />
-        <Route path="/my-games" element={<div>My Games</div>} />
-        <Route path="/collections" element={<div>Collections</div>} />
-        <Route path="/lists" element={<div>Lists</div>} />
+        <Route
+          index
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/categories/:category"
+          element={
+            <ProtectedRoute>
+              <Category />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <div>Profile</div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-games"
+          element={
+            <ProtectedRoute>
+              <div>My Games</div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/collections"
+          element={
+            <ProtectedRoute>
+              <div>Collections</div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/lists"
+          element={
+            <ProtectedRoute>
+              <div>Lists</div>
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   );

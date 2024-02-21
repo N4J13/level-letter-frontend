@@ -3,18 +3,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useMutation } from "react-query";
-import { axiosInstance } from "@/lib/axios";
 import { Link } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 import FormInput from "@/components/ui/FormInput";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
 import { useEffect } from "react";
+import { useAuth } from "@/lib/hooks/useAuth";
 
-const loginFormSchema = z.object({
+export const loginFormSchema = z.object({
   email: z
     .string()
     .min(2, "This Field is Required")
@@ -24,9 +22,9 @@ const loginFormSchema = z.object({
 });
 
 const LoginForm = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const { login , loginLoading } = useAuth();
   const [token] = useLocalStorage("token", "");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
@@ -42,45 +40,8 @@ const LoginForm = () => {
     },
   });
 
-  const loginMutaion = useMutation({
-    mutationKey: "login",
-    mutationFn: (data: z.infer<typeof loginFormSchema>) => {
-      return axiosInstance.post("/user/login", data);
-    },
-    onSuccess: (value) => {
-      if (value.data.message === "Password Doesnt match") {
-        toast({
-          title: value.data.message,
-          description: "Please try again with a different password.",
-        });
-      } else if (value.data.message === "User not found") {
-        toast({
-          title: value.data.message,
-          description: "Please try again with a different email.",
-        });
-      } else if (value.data.message === "Email not verified , Email Sent") {
-        toast({
-          title: value.data.message,
-          description: "Please check your email to verify your account.",
-        });
-      } else {
-        localStorage.setItem("token", value.data.token);
-        localStorage.setItem("userId", value.data.userId);
-        setTimeout(() => {
-          navigate("/");
-        }, 100);
-      }
-    },
-    onError: () => {
-      toast({
-        title: "Something went wrong",
-        description: "Please try again later.",
-      });
-    },
-  });
-
   const onSubmit = (value: z.infer<typeof loginFormSchema>) => {
-    loginMutaion.mutate(value);
+    login(value);
   };
 
   return (
@@ -117,12 +78,12 @@ const LoginForm = () => {
               </Link>
             </div>
             <Button className="w-full" type="submit">
-              {loginMutaion.isLoading ? (
+              {loginLoading ? (
                 <span className="flex items-center gap-2">
                   Loading
                   <motion.span
                     initial="hidden"
-                    animate={loginMutaion.isLoading ? "animate" : "hidden"}
+                    animate={loginLoading ? "animate" : "hidden"}
                     variants={{
                       hidden: {
                         opacity: 0,

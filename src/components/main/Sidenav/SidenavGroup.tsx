@@ -1,3 +1,4 @@
+import { useSideNavStore } from "@/store/zustand";
 import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -13,6 +14,8 @@ type SidenavGroupProps = {
 
 const SidenavGroup: React.FC<SidenavGroupProps> = ({ title, items }) => {
   const location = useLocation().pathname;
+  const { toggleActive } = useSideNavStore();
+
   return (
     <li className="space-y-4 pl-8 ">
       <div className="text-slate-500 text-[13px]">{title}</div>
@@ -20,12 +23,15 @@ const SidenavGroup: React.FC<SidenavGroupProps> = ({ title, items }) => {
         {items.map((item) => {
           const isActive = location === item.path;
           return (
-            <Link  to={item.path}>
+            <Link key={item.path} to={item.path}>
               <li
                 className={` ${
-                  isActive ? "text-green-500 before:absolute before:bg-green-500 before:rounded-l-sm before:h-full before:w-1 before:top-1/2 before:-translate-y-1/2 before:right-0" : "text-white"
+                  isActive
+                    ? "text-green-500 before:absolute before:bg-green-500 before:rounded-l-sm before:h-full before:w-1 before:top-1/2 before:-translate-y-1/2 before:right-0"
+                    : "text-white"
                 } flex items-center py-2 relative gap-3 `}
                 key={item.title}
+                onClick={() => toggleActive()}
               >
                 <div>{item.icon as ReactNode}</div>
                 <div className="font-normal text-[15px]">{item.title}</div>

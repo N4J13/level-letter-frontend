@@ -8,18 +8,27 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Gamepad2, Library,  ListIcon, Power, User } from "lucide-react";
+import { Gamepad2, Library, ListIcon, Power, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/lib/hooks/useAuth";
+import { generateImageUrl } from "@/lib/utils";
 
 const Profile = () => {
   // Todo 1: Add a dropdown menu to the profile avatar
   const navigate = useNavigate();
+  const { user , logout } = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage
+            src={
+              user?.profile_pic
+                ? generateImageUrl(user.profile_pic)
+                : "https://github.com/shadcn.png"
+            }
+          />
+          <AvatarFallback>{user?.username[0].toUpperCase()}</AvatarFallback>
         </Avatar>
         <DropdownMenuContent className="bg-background-secondary left-6 border-slate-800 min-w-56">
           <DropdownMenuLabel className="text-white">
@@ -32,7 +41,7 @@ const Profile = () => {
             <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => navigate("/my-games")}>
-            <Gamepad2 size={16}  />
+            <Gamepad2 size={16} />
             <span>My Games</span>
             <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
           </DropdownMenuItem>
@@ -46,7 +55,7 @@ const Profile = () => {
             <DropdownMenuShortcut>⌘H</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => logout()}>
             <Power size={16} />
             <span>Logout</span>
             <DropdownMenuShortcut>⌘L</DropdownMenuShortcut>
