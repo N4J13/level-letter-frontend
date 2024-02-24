@@ -2,19 +2,14 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-} from "@/components/ui/form";
-import { useMutation } from "react-query";
-import { axiosInstance } from "@/lib/axios";
+import { Form } from "@/components/ui/form";
 import { Link } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
-import { AxiosError } from "axios";
 import FormInput from "@/components/ui/FormInput";
+import { useAuth } from "@/lib/hooks/useAuth";
 
-const signupFormSchema = z.object({
+export const signupFormSchema = z.object({
   username: z.string().min(2, "This Field is Required").trim(),
   email: z
     .string()
@@ -25,9 +20,7 @@ const signupFormSchema = z.object({
 });
 
 const SignUpForm = () => {
-  
-  const { toast } = useToast();
-  //   const testkey : boolean = true;
+  const { signup, signupLoading } = useAuth();
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -37,40 +30,9 @@ const SignUpForm = () => {
     },
   });
 
-  const signupMutaion = useMutation({
-    mutationKey: "login",
-    mutationFn: (data: z.infer<typeof signupFormSchema>) => {
-      return axiosInstance.post("/user/signup", data);
-    },
-    onSuccess: () => {
-      toast({
-        title: "Email sent",
-        description: "Please check your email to verify your account.",
-      });
-    },
-    onError: (error: AxiosError<{ message?: string }>) => {
-      if (error?.response?.data?.message === "Username already exists") {
-        toast({
-          title: error.response.data.message,
-          description: "Please try again with a different username.",
-        });
-      } else if (error?.response?.data?.message === "Email already exists") {
-        toast({
-          title: error.response.data.message,
-          description: "Please try again with a different email.",
-        });
-      } else {
-        toast({
-          title: "Something went wrong.",
-          description: "Please try again later.",
-        });
-      }
-    },
-  });
-
   const onSubmit = (value: z.infer<typeof signupFormSchema>) => {
     form.reset();
-    signupMutaion.mutate(value);
+    signup(value);
   };
 
   return (
@@ -97,20 +59,21 @@ const SignUpForm = () => {
               name="email"
               placeholder="Enter a email"
             />
-            <FormInput 
-            form={form}
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="Enter your password" />
-            
+            <FormInput
+              form={form}
+              label="Password"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+            />
+
             <Button className="w-full" type="submit">
-              {signupMutaion.isLoading ? (
+              {signupLoading ? (
                 <span className="flex items-center gap-2">
                   Loading
                   <motion.span
                     initial="hidden"
-                    animate={signupMutaion.isLoading ? "animate" : "hidden"}
+                    animate={signupLoading ? "animate" : "hidden"}
                     variants={{
                       hidden: {
                         opacity: 0,

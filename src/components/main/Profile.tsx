@@ -12,11 +12,15 @@ import { Gamepad2, Library, ListIcon, Power, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { generateImageUrl } from "@/lib/utils";
+import useCntrlShortcut from "@/lib/hooks/useCntrlShortcut";
 
 const Profile = () => {
-  // Todo 1: Add a dropdown menu to the profile avatar
   const navigate = useNavigate();
-  const { user , logout } = useAuth();
+  const { user, logout } = useAuth();
+  useCntrlShortcut("m", () => navigate("/profile"));
+  useCntrlShortcut(",", () => navigate("/my-games"));
+  useCntrlShortcut("l", () => navigate("/lists"));
+  useCntrlShortcut("q", () => logout());
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -52,13 +56,13 @@ const Profile = () => {
           <DropdownMenuItem onClick={() => navigate("/lists")}>
             <ListIcon size={16} />
             <span>Lists</span>
-            <DropdownMenuShortcut>⌘H</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⌘L</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => logout()}>
             <Power size={16} />
             <span>Logout</span>
-            <DropdownMenuShortcut>⌘L</DropdownMenuShortcut>
+            <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenuTrigger>

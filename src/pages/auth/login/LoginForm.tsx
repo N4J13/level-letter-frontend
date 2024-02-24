@@ -12,6 +12,7 @@ import useLocalStorage from "use-local-storage";
 import { useEffect } from "react";
 import { useAuth } from "@/lib/hooks/useAuth";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const loginFormSchema = z.object({
   email: z
     .string()

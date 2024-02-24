@@ -6,6 +6,8 @@ import { loginFormSchema } from "@/pages/auth/login/LoginForm";
 import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
+import { signupFormSchema } from "@/pages/auth/signup/SignupForm";
+import { AxiosError } from "axios";
 
 interface User {
   username: string;
@@ -20,13 +22,15 @@ interface AuthContextType {
   user: User | null;
   login: (value: z.infer<typeof loginFormSchema>) => void;
   loginLoading: boolean;
-  signup: (value: z.infer<typeof loginFormSchema>) => void;
+  signup: (value: z.infer<typeof signupFormSchema>) => void;
+  signupLoading: boolean;
   logout: () => void;
   loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -75,6 +79,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     },
   });
 
+  const signupMutaion = useMutation({
+    mutationKey: "signup",
+    mutationFn: (data: z.infer<typeof signupFormSchema>) => {
+      return axiosInstance.post("/user/signup", data);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Email sent",
+        description: "Please check your email to verify your account.",
+      });
+    },
+    onError: (error: AxiosError<{ message?: string }>) => {
+      if (error?.response?.data?.message === "Username already exists") {
+        toast({
+          title: error.response.data.message,
+          description: "Please try again with a different username.",
+        });
+      } else if (error?.response?.data?.message === "Email already exists") {
+        toast({
+          title: error.response.data.message,
+          description: "Please try again with a different email.",
+        });
+      } else {
+        toast({
+          title: "Something went wrong.",
+          description: "Please try again later.",
+        });
+      }
+    },
+  });
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -99,15 +134,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     loginMutaion.mutate(value);
   };
 
-  const signup = (value: z.infer<typeof loginFormSchema>) => {
-    console.log(value);
-    
+  const signup = (value: z.infer<typeof signupFormSchema>) => {
+    signupMutaion.mutate(value);
   }
 
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
-    navigate("/login");
+    navigate("/login", { replace: true});
   };
 
   return (
@@ -119,6 +153,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         logout,
         signup,
         loginLoading: loginMutaion.isLoading,
+        signupLoading: signupMutaion.isLoading,
       }}
     >
       {children}

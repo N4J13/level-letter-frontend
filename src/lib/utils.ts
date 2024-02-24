@@ -9,6 +9,4 @@ export const generateImageUrl = (url: string) => {
   return `http://localhost:3333/${url}`;
 };
 
-export const initialFromUserName = (name: string) => {
-  return name[0].toUpperCase();
-};
+
