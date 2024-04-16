@@ -1,6 +1,5 @@
 // useAuth.tsx
 import { useContext, createContext, useState, useEffect } from "react";
-import { axiosInstance } from "../axios";
 import { useMutation } from "react-query";
 import { loginFormSchema } from "@/pages/auth/login/LoginForm";
 import { useToast } from "@/components/ui/use-toast";
@@ -8,6 +7,7 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { signupFormSchema } from "@/pages/auth/signup/SignupForm";
 import { AxiosError } from "axios";
+import { client } from "@/api/config/apiConfig";
 
 interface User {
   username: string;
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const loginMutaion = useMutation({
     mutationKey: "login",
     mutationFn: (data: z.infer<typeof loginFormSchema>) => {
-      return axiosInstance.post("/user/login", data);
+      return client.post("/user/login", data);
     },
     onSuccess: (value) => {
       if (value.data.message === "Password Doesnt match") {
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signupMutaion = useMutation({
     mutationKey: "signup",
     mutationFn: (data: z.infer<typeof signupFormSchema>) => {
-      return axiosInstance.post("/user/signup", data);
+      return client.post("/user/signup", data);
     },
     onSuccess: () => {
       toast({
@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const token = localStorage.getItem("token");
     if (token) {
       setLoading(true);
-      axiosInstance
+      client
         .get("user/profile", {
           headers: {
             Authorization: token.replace(/"/g, ""),
@@ -136,12 +136,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signup = (value: z.infer<typeof signupFormSchema>) => {
     signupMutaion.mutate(value);
-  }
+  };
 
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
-    navigate("/login", { replace: true});
+    navigate("/login", { replace: true });
   };
 
   return (

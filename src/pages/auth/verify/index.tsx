@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import { client } from "@/api/config/apiConfig";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -12,7 +12,7 @@ const VerifyEmail = () => {
     const verifyToken = async () => {
       try {
         if (!token) return navigate("/login");
-        const response = await axiosInstance.post("/user/verify", { token });
+        const response = await client.post("/user/verify_email", { token });
         const { token: jwttoken, userId } = response.data;
         localStorage.setItem("token", jwttoken);
         localStorage.setItem("userId", userId);

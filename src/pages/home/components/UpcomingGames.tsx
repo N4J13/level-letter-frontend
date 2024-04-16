@@ -1,27 +1,28 @@
 import CardList from "@/components/game/Card/CardList";
 import { useQuery } from "react-query";
-import { getPopularGames } from "../api/games";
+import { getUpcomingGames } from "../api/games";
 import CardSkelton from "@/components/game/Card/CardSkelton";
 
-const PopularGames = () => {
+const UpcomingGames = () => {
   const { data, isLoading, isError } = useQuery(
-    "popularGames",
-    getPopularGames
+    "upcomingGames",
+    getUpcomingGames
   );
 
 
 
   if (isLoading) return <CardSkelton />;
 
+  console.log(data);
   
 
   if (isError) return <div>Error fetching data</div>;
 
   return (
     <div>
-      <CardList title="Popular Games" items={data.results} viewAll="/home/popular-games" />
+      <CardList title="Upcoming Games" items={data.results} viewAll="/home/upcoming-games" />
     </div>
   );
 };
 
-export default PopularGames;
+export default UpcomingGames;

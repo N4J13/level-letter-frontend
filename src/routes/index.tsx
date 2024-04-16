@@ -8,6 +8,7 @@ import Category from "@/pages/categories/[category]";
 import UserLayout from "@/components/main/UserLayout";
 import AuthLayout from "@/components/main/AuthLayout";
 import ProtectedRoute from "./ProtectedRoute";
+import Lists from "@/pages/user/lists";
 
 export const AppRoutes = () => {
   return (
@@ -64,7 +65,7 @@ export const AppRoutes = () => {
           path="/lists"
           element={
             <ProtectedRoute>
-              <div>Lists</div>
+              <Lists />
             </ProtectedRoute>
           }
         />
