@@ -7,7 +7,6 @@ import { firstLetterUppercase } from "@/lib/utils";
 
 const Category = () => {
   const { category } = useParams();
-
   const { data, isLoading, isError } = useQuery(
     ["gamesByCategory", category],
     () => getGamesbyCategory(category)

@@ -1,31 +1,43 @@
 import { useGet, usePost } from "../utils/apiRequest";
 
-export const useLogin = (data: Record<string, string>) => {
+export const useLogin = () => {
   return usePost({
     key: "login",
-    url: "/user/login",
-    data: data,
+    url: "/auth/login",
   });
 };
 
-export const useRegister = (data: Record<string, string>) => {
+export const useRegister = () => {
   return usePost({
     key: "register",
-    url: "/user/register",
-    data: data,
+    url: "/auth/register",
   });
 };
 
 export const useLogout = () => {
   return useGet({
     key: "logout",
-    url: "/user/logout",
+    url: "/auth/logout",
   });
 };
 
 export const useProfile = () => {
   return useGet({
     key: "profile",
-    url: "/user/profile",
+    url: "/auth/profile",
   });
 };
+
+export const useForgotPasswordRequest = () => {
+  return usePost({
+    key: "forgotPasswordRequest",
+    url: "/auth/request_password_reset",
+  });
+}
+
+export const useResetPassword = () => {
+  return usePost({
+    key: "resetPassword",
+    url: "/auth/reset_password",
+  });
+}

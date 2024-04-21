@@ -1,13 +1,11 @@
-// useAuth.tsx
 import { useContext, createContext, useState, useEffect } from "react";
 import { useMutation } from "react-query";
-import { loginFormSchema } from "@/pages/auth/login/LoginForm";
 import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { signupFormSchema } from "@/pages/auth/signup/SignupForm";
 import { AxiosError } from "axios";
 import { client } from "@/api/config/apiConfig";
+import { loginFormSchema, signupFormSchema } from "@/types";
 
 interface User {
   username: string;
@@ -45,10 +43,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+
   const loginMutaion = useMutation({
     mutationKey: "login",
     mutationFn: (data: z.infer<typeof loginFormSchema>) => {
-      return client.post("/user/login", data);
+      return client.post("/auth/login", data);
     },
     onSuccess: (value) => {
       if (value.data.message === "Password Doesnt match") {
@@ -82,7 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signupMutaion = useMutation({
     mutationKey: "signup",
     mutationFn: (data: z.infer<typeof signupFormSchema>) => {
-      return client.post("/user/signup", data);
+      return client.post("/auth/signup", data);
     },
     onSuccess: () => {
       toast({
@@ -115,7 +114,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       setLoading(true);
       client
-        .get("user/profile", {
+        .get("auth/profile", {
           headers: {
             Authorization: token.replace(/"/g, ""),
           },

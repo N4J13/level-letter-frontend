@@ -5,7 +5,6 @@ type UseServerApiProps = {
   key: string | unknown[];
   url: string;
   queryParams?: Record<string, unknown>;
-  data: Record<string, unknown>;
 };
 
 const token = localStorage.getItem("token");
@@ -29,38 +28,34 @@ export const useGet = ({
   });
 };
 
-export const usePost = async ({ key, url, queryParams }: UseServerApiProps) => {
+export const usePost = ({ key, url, queryParams }: UseServerApiProps) => {
   return useMutation({
     mutationKey: key,
-    mutationFn: async (data) =>
-      client
-        .post(url, data, {
-          params: queryParams,
-        })
-        .then((res) => res.data),
+    mutationFn: (data: unknown) =>
+      client.post(url, data, {
+        params: queryParams,
+      }),
   });
 };
 
-export const usePut = async ({ key, url, queryParams }: UseServerApiProps) => {
+export const usePut = ({ key, url, queryParams }: UseServerApiProps) => {
   return useMutation({
     mutationKey: key,
     mutationFn: async (data) =>
-      client
-        .put(url, data, {
-          params: queryParams,
-        })
-        .then((res) => res.data),
+      client.put(url, data, {
+        params: queryParams,
+      }),
   });
 };
 
-export const useDelete = async ({
+export const useDelete = ({
   key,
   url,
   queryParams,
 }: Omit<UseServerApiProps, "data">) => {
   return useMutation({
     mutationKey: key,
-    mutationFn: async () =>
+    mutationFn: () =>
       client
         .delete(url, {
           params: queryParams,

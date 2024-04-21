@@ -19,22 +19,19 @@ export const useCustomListById = (id: string) => {
   });
 };
 
-export const useCreateCustomList = (data: Record<string, unknown>) => {
+export const useCreateCustomList = () => {
   return usePost({
     key: "customList",
     url: "/game_process/custom_list",
-    data: data,
   });
 };
 
 export const useUpdateCustomList = (
   id: string,
-  data: Record<string, unknown>
 ) => {
   return usePut({
     key: ["customList", id],
     url: `/game_process/custom_list/${id}`,
-    data: data,
   });
 };
 

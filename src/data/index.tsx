@@ -82,3 +82,35 @@ export const sidenavItems: SidenavItem[] = [
     ],
   },
 ];
+
+
+export const myGamesTabElements = [
+  {
+    name: "Yet",
+    value: "yet",
+  },
+  {
+    name: "Owned",
+    value: "owned",
+  },
+  {
+    name: "Wishlist",
+    value: "wishlist",
+  },
+  {
+    name: "Playing",
+    value: "playing",
+  },
+  {
+    name: "Beaten",
+    value: "beaten",
+  },
+  {
+    name: "Dropped",
+    value: "dropped",
+  },
+  {
+    name: "Plan to Play",
+    value: "plantoplay",
+  },
+];
