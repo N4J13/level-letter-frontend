@@ -9,6 +9,8 @@ import UserLayout from "@/components/main/UserLayout";
 import AuthLayout from "@/components/main/AuthLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import Lists from "@/pages/user/lists";
+import ResetPassword from "@/pages/auth/reset-password";
+import MyGames from "@/pages/user/my-games";
 
 export const AppRoutes = () => {
   return (
@@ -17,9 +19,9 @@ export const AppRoutes = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Route>
       <Route path="/verify" element={<VerifyEmail />} />
-
       <Route path="/" element={<UserLayout />}>
         <Route
           index
@@ -49,7 +51,7 @@ export const AppRoutes = () => {
           path="/my-games"
           element={
             <ProtectedRoute>
-              <div>My Games</div>
+              <MyGames />
             </ProtectedRoute>
           }
         />

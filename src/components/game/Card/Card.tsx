@@ -1,14 +1,18 @@
-type CardProps = {
-  title: string;
-  image: string;
-};
+import { Game } from "@/types";
+import { Link } from "react-router-dom";
 
-const Card: React.FC<CardProps> = ({ title, image }) => {
+const GameCard = (game: Game) => {
   return (
-    <div className="w-full aspect-video">
-      <img src={image} alt={title} className="w-full h-full object-cover rounded-xl" />
-    </div>
+    <Link to={`/game/${game._id}`} className="w-full aspect-video">
+      <div className="w-full aspect-video">
+        <img
+          src={game.cover}
+          alt={game.name}
+          className="w-full h-full object-cover rounded-xl"
+        />
+      </div>
+    </Link>
   );
 };
 
-export default Card;
+export default GameCard;

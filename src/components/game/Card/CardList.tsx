@@ -1,13 +1,10 @@
 import { Link } from "react-router-dom";
-import Card from "./Card";
+import GameCard from "./Card";
+import { Game } from "@/types";
 
 type CardListProps = {
   title: string;
-  items: {
-    title: string;
-    id: string;
-    background_image: string;
-  }[];
+  items: Game[]
   viewAll?: string;
 };
 
@@ -23,9 +20,9 @@ const CardList: React.FC<CardListProps> = ({ title, items, viewAll }) => {
         )}
       </div>
       <div className="grid grid-cols-5 gap-4 w-full overflow-auto">
-        {items.map((item) => (
-          <Link to={`/game/${item.id}`} key={item.title}>
-            <Card title={item.title} image={item.background_image} />
+        {items.map((item : Game) => (
+          <Link to={`/game/${item._id}`} key={item._id}>
+            <GameCard {...item} />
           </Link>
         ))}
       </div>
