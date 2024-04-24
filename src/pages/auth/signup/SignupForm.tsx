@@ -11,7 +11,6 @@ import { useAuth } from "@/lib/hooks/useAuth";
 import { signupFormSchema } from "@/types";
 
 
-
 const SignUpForm = () => {
   const { signup, signupLoading } = useAuth();
   const form = useForm<z.infer<typeof signupFormSchema>>({

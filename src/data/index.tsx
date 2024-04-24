@@ -3,11 +3,11 @@ import {
   Home,
   LandPlot,
   Library,
-  ListIcon,
   Puzzle,
   Swords,
   TrafficCone,
   User2,
+  UsersRound,
 } from "lucide-react";
 
 type SidenavItem = {
@@ -44,14 +44,14 @@ export const sidenavItems: SidenavItem[] = [
         icon: <Gamepad2 strokeWidth={strokeWidth} size={size} />,
       },
       {
-        title: "Collections",
-        path: "/collections",
+        title: "Lists",
+        path: "/lists",
         icon: <Library strokeWidth={strokeWidth} size={size} />,
       },
       {
-        title: "Lists",
-        path: "/lists",
-        icon: <ListIcon strokeWidth={strokeWidth} size={size} />,
+        title: "friends",
+        path: "/friends",
+        icon: <UsersRound strokeWidth={strokeWidth} size={size} />,
       },
     ],
   },

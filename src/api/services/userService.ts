@@ -17,38 +17,38 @@ export const useGetMyGames = (status: string | null) => {
   });
 };
 
-export const useGetAllCollectionS = () => {
+export const useGetAllLists = () => {
   return useGet({
-    key: "getAllCollection",
-    url: "user/collection",
+    key: "getAllUserLists",
+    url: "user/lists",
   });
 };
 
-export const useGetCollectionById = (id: number) => {
+export const useGetListsById = (id: number) => {
   return useGet({
-    key: ["getCollectionById", id],
-    url: `/user/collection/${id}`,
+    key: ["getListsById", id],
+    url: `/user/list/${id}`,
   });
 };
 
-export const useCreateCollection = () => {
+export const useCreateLists = () => {
   return usePost({
-    key: "createCollection",
-    url: "/user/collection",
+    key: "createLists",
+    url: "/user/list",
   });
 };
 
-export const useUpdateCollection = () => {
+export const useUpdateLists = () => {
   return usePut({
-    key: "updateCollection",
-    url: "/user/collection",
+    key: "updateLists",
+    url: "/user/list",
   });
 };
 
-export const useDeleteCollection = () => {
+export const useDeleteLists = () => {
   return useDelete({
-    key: "deleteCollection",
-    url: "/user/collection",
+    key: "deleteLists",
+    url: "/user/list",
   });
 }
 

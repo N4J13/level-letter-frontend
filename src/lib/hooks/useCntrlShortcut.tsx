@@ -5,7 +5,7 @@ export default function useCntrlShortcut(
   callback: () => void
 ) {
   const handleKeyDown = (event: KeyboardEvent) => {
-    event.preventDefault();
+    // event.preventDefault();
     if (event.key === targetKey && event.ctrlKey) {
       callback();
     }
